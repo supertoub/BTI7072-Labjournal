@@ -1,5 +1,6 @@
 # LAB Journal
-## 19. February 2019
+## Exercise 1
+### 19. February 2019
 Tobias Weissert & Thomas Baumann 
 - Set up Git repo
 - Set up LAB-Journal
@@ -22,7 +23,7 @@ Update /etc/hostname
 router.n113.nslab.ch
 ```
 
-## 26. Februar 2019
+### 26. Februar 2019
 Tobias Weissert & Thomas Baumann<br/>
 
 Router:
@@ -78,3 +79,10 @@ ping google.com ✓
 Client:
 - Set IP to manual: 193.5.82.128/27 Gateway: 193.5.82.129
 - Set DNS Server to 192.5.80.80
+
+### 5. März 2019
+Tobias Weissert & Thomas Baumann
+![Capture networkmonitor](./NetworkMonitorScreenshot.png)
+![ARP Capture](./arpScreenshot.png)
+
+## Exercise 2
