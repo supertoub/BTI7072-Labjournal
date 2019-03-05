@@ -1,5 +1,5 @@
-# LAB Journal
-## Exercise 1
+	# LAB Journal
+	## Exercise 1
 ### 19. February 2019
 Tobias Weissert & Thomas Baumann 
 - Set up Git repo
@@ -34,9 +34,9 @@ NM_CONTROLLED=no
 TYPE=Ethernet
 ONBOOT=yes
 BOOTPROTO=none
-IPADDR=192.5.80.113
+IPADDR=193.5.80.113
 PREFIX=27
-GATEWAY=192.5.80.1
+GATEWAY=193.5.80.1
 IPV4_FAILURE_FATAL=yes
 Name="System eth0"
 ```
@@ -50,9 +50,9 @@ NM_CONTROLLED=no
 TYPE=Ethernet
 ONBOOT=yes
 BOOTPROTO=none
-IPADDR=192.5.82.129
+IPADDR=193.5.82.129
 PREFIX=27
-GATEWAY=192.5.82.1
+GATEWAY=193.5.82.1
 IPV4_FAILURE_FATAL=yes
 Name="System eth0"
 ```
@@ -78,11 +78,51 @@ ping google.com ✓
 
 Client:
 - Set IP to manual: 193.5.82.128/27 Gateway: 193.5.82.129
-- Set DNS Server to 192.5.80.80
+- Set DNS Server to 193.5.80.80
 
 ### 5. März 2019
 Tobias Weissert & Thomas Baumann
+Network capture
 ![Capture networkmonitor](./NetworkMonitorScreenshot.png)
+
+ARP capture
 ![ARP Capture](./arpScreenshot.png)
 
 ## Exercise 2
+Router:
+```ping 193.5.82.100 [Redirect host, nexthop: 193.5.80.112]```
+![Ping another group](./ICMPRedirect.png)
+
+Router:
+```ip route add 193.5.82.96/27 via 193.5.80.112 dev ens4```
+
+Make route persistent create file /etc/sysconfig/network-scripts/route-ens4
+```193.5.82.96/27 via 193.5.80.112 dev ens4```
+
+## Exercise 3
+Router: change /etc/sysconfig/network-scripts/ifcfg-ens3 and ifcfg-ens4
+```
+ONBOOT=no
+```
+
+Router: add to /etc/quagga/zebra.conf
+```
+log file /var/log/quagga/zebra.log
+```
+
+```
+systemcpl start zebra
+```
+```
+vtysh:
+conf t
+interface ens3
+ip address 193.82.129/27
+ip route 
+interface ens4
+ip address 193.80.113/27
+ip route 193.5.82.96/27 193.5.80.112
+ip route 193.5.82.96/27 ens4
+ip route 0.0.0.0/0 193.5.80.1
+write mem
+```
