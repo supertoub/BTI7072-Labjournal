@@ -168,7 +168,7 @@ distance 100 193.5.80.0/24
 ping 8.8.8.8 ✓ 
 ```
 ![RIP Configuration](./RIPConf.png)
-![RIP Announcment](./RIPAnnouncment.png)
+![RIP Announcment](./RIPAnnouncement.png)
 
 ## Exercise 5
 Router: add to /etc/quagga/ospfd.conf
