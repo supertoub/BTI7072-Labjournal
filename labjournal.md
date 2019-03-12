@@ -117,8 +117,7 @@ systemcpl start zebra
 vtysh:
 conf t
 interface ens3
-ip address 193.82.129/27
-ip route 
+ip address 193.5.82.129/27
 interface ens4
 ip address 193.80.113/27
 ip route 193.5.82.96/27 193.5.80.112
@@ -126,3 +125,46 @@ ip route 193.5.82.96/27 ens4
 ip route 0.0.0.0/0 193.5.80.1
 write mem
 ```
+
+### 12. März 2019
+Tobias Weissert & Thomas Baumann
+```
+vtysh:
+conf t
+no ip route 193.5.82.96/27 193.5.80.112
+no ip route 193.5.82.96/27 ens4
+no ip route 0.0.0.0/0 193.5.80.1
+no ip address 193.5.82.129/27
+
+ip address 193.5.82.129/24
+ping 8.8.8.8 ✓ 
+```
+
+## Exercise 4
+Router: add to /etc/quagga/ripd.conf
+```
+log file /etc/quagga/ripd.conf
+```
+```
+systemctl start ripd
+Log contains: RIPd starting
+```
+```
+chown quagga.quagga /etc/qzagga/ripd.conf
+vtysh
+no ip route 0.0.0.0/ 193.5.80.1
+conf t key chain demonet
+key 1
+key-string demo$rip
+interface ens4
+ip rip authentication mode md5
+ip rip authentication key-chain demonet
+
+router rip 
+redistribute connected
+network 193.5.80.0/24
+network ens4
+distance 100 193.5.80.0/24
+ping 8.8.8.8 ✓ 
+```
+
