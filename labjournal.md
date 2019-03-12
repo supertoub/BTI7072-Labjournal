@@ -150,7 +150,7 @@ systemctl start ripd
 Log contains: RIPd starting
 ```
 ```
-chown quagga.quagga /etc/qzagga/ripd.conf
+chown quagga.quagga /var/log/qzagga/ripd.conf
 vtysh
 no ip route 0.0.0.0/ 193.5.80.1
 conf t key chain demonet
@@ -167,4 +167,29 @@ network ens4
 distance 100 193.5.80.0/24
 ping 8.8.8.8 ✓ 
 ```
+![RIP Configuration](./RIPConf.png)
+![RIP Announcment](./RIPAnnouncment.png)
 
+## Exercise 5
+Router: add to /etc/quagga/ospfd.conf
+```
+log file /var/log/quagga/ospfd.conf
+```
+```
+systemctl start ospfd
+ospf starting
+chown quagga.quagga /var/log/qzagga/ospfd.conf
+```
+```
+vtysh coinf t
+router ospf
+ospf router-id 193.5.80.113
+interface ens4
+ip ospf authentication message-digest
+ip ospf message-digest-key 1 md5 demo$ospf
+redistribute connected
+network 193.5.80.0/24 area 0.0.0.0
+area 0.0.0.0 range 193.5.80.0/24
+area 0.0.0.0 authentication message-digest
+systemctl enable ospfd
+```
