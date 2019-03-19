@@ -1,12 +1,12 @@
-	# LAB Journal
-	## Exercise 1
+# LAB Journal Serie 1
+## Exercise 1
 ### 19. February 2019
-Tobias Weissert & Thomas Baumann 
+Tobias Weissert & Thomas Baumann
 - Set up Git repo
 - Set up LAB-Journal
 - Group assingment nr: n113
 - Familiarize with the virtual lab setup
-- Search RHEL 7 Networking guide (TODO) 
+- Search RHEL 7 Networking guide (TODO)
 - Router VM edit config of ENS4 (TODO)
 
 ```
@@ -137,7 +137,7 @@ no ip route 0.0.0.0/0 193.5.80.1
 no ip address 193.5.82.129/27
 
 ip address 193.5.82.129/24
-ping 8.8.8.8 ✓ 
+ping 8.8.8.8 ✓
 ```
 
 ## Exercise 4
@@ -160,12 +160,12 @@ interface ens4
 ip rip authentication mode md5
 ip rip authentication key-chain demonet
 
-router rip 
+router rip
 redistribute connected
 network 193.5.80.0/24
 network ens4
 distance 100 193.5.80.0/24
-ping 8.8.8.8 ✓ 
+ping 8.8.8.8 ✓
 ```
 ![RIP Configuration](./RIPConf.png)
 ![RIP Announcment](./RIPAnnouncement.png)
@@ -193,3 +193,21 @@ area 0.0.0.0 range 193.5.80.0/24
 area 0.0.0.0 authentication message-digest
 systemctl enable ospfd
 ```
+![OSPF Capture](./ospfCapture.png)
+
+## Exercise 6
+### 19. März 2019
+Tobias Weissert & Thomas Baumann
+
+![Route priority](./ospfVSrip.png)
+RIP has a higher priority
+
+```
+router rip
+distance 120 193.5.82.160/27
+ip route 192.5.80.1 0.0.0.0/0 130
+```
+
+![Static route](./staticRouteBackup.png)
+
+# LAB Journal Serie 2
