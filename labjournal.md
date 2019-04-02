@@ -210,4 +210,39 @@ ip route 192.5.80.1 0.0.0.0/0 130
 
 ![Static route](./staticRouteBackup.png)
 
+### 26. März 2019 IETF 104
 # LAB Journal Serie 2
+### 2. April 2019
+Tobias Weissert & Thomas Baumann
+
+```
+ip -6 addr
+```
+```
+ping6 www.switch.ch ✓
+```
+
+![Router advertisment](./icmpv6Advertisment.png)
+
+Source address in the router advertisment is the virtual network adapter of the VM host.
+
+```
+vtysh conf t interface ens4 
+ipv6 address 2001:620:500:FF00::FF0D/64
+ipv6 address FE80::FF0D/64
+
+vtysh conf t interface ens3
+ipv6 address 2001:620:500:FF0D::1/64
+ipv6 address FE80::1/64
+write mem
+```
+
+```
+vtysh conf t interface ens4
+ipv6 route ::/0 FE80::FC54:FF:FEE7:8557 250
+write mem
+```
+```
+ping6 switch.ch ✓
+ping6 -i ens4 fe80::1 ✓
+```
