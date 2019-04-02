@@ -222,7 +222,7 @@ ip -6 addr
 ping6 www.switch.ch ✓
 ```
 
-![Router advertisment](./icmpv6Advertisment.png)
+![Router advertisment](./icmpv6Advertisement.png)
 
 Source address in the router advertisment is the virtual network adapter of the VM host.
 
