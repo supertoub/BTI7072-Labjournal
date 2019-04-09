@@ -227,7 +227,7 @@ ping6 www.switch.ch ✓
 Source address in the router advertisment is the virtual network adapter of the VM host.
 
 ```
-vtysh conf t interface ens4 
+vtysh conf t interface ens4
 ipv6 address 2001:620:500:FF00::FF0D/64
 ipv6 address FE80::FF0D/64
 
@@ -246,3 +246,46 @@ write mem
 ping6 switch.ch ✓
 ping6 -i ens4 fe80::1 ✓
 ```
+
+### 09. April 2019
+Tobias Weissert & Thomas Baumann
+## Exercise 9
+we prefer quagga
+```
+vtysh conf t interface ens3
+no ipv6 ns suppress-ra
+ipv6 nd prefix 2001:620:500:FF0D::/64
+write mem
+```
+
+edit /etc/sysctl.conf
+```
+net.ipv6.conf.all.forwaring = 1
+```
+
+client
+```
+ip a
+ipv6: 2001:620:500:FF0D:1116:6EE0:E63F:5D24/64 ✓
+ping6 2001:620:FF00::FF0D ✓
+
+ntptime
+ifconfig ens3
+echo e0576a5c5d45a0005054fffeaa354b | sha1sum - | cut -c31-40
+vtysh interface ens3
+ipv6 address fdf8:f06a:90f5::/48
+ipv6 nd prefix fdf8:f06a:90f5::/48
+```
+
+edit /etc/quagga/ripngd.conf
+```
+log file /var/log/quagga/ospf6.conf
+```
+
+```
+chown quagga.quagga /var/log/quagga/ripngd.conf
+vtysh
+router ripng
+redistribute connected
+```
+
