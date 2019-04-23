@@ -1,7 +1,5 @@
 # LAB Journal Serie 1
 ## Exercise 1
-### 19. February 2019
-Tobias Weissert & Thomas Baumann
 - Set up Git repo
 - Set up LAB-Journal
 - Group assingment nr: n113
@@ -22,9 +20,6 @@ Router:
 Update /etc/hostname
 router.n113.nslab.ch
 ```
-
-### 26. Februar 2019
-Tobias Weissert & Thomas Baumann<br/>
 
 Router:
 ```
@@ -276,7 +271,7 @@ vtysh interface ens3
 ipv6 address fdf8:f06a:90f5::/48
 ipv6 nd prefix fdf8:f06a:90f5::/48
 ```
-
+## Exercise 10
 edit /etc/quagga/ripngd.conf
 ```
 log file /var/log/quagga/ospf6.conf
@@ -289,3 +284,94 @@ router ripng
 redistribute connected
 ```
 
+### 23. April 2019
+Tobias Weissert & Thomas Baumann
+
+# Serie 3 DHCP and DNS
+## Exercise 12
+edit /etc/sysconfig/network
+```
+NETWORKING=yes
+NETWORKING_IPV6=yes
+NOZEROCONF=yes
+GATEWAY=193.5.82.129
+IPV6_DEFAULTDEV=ens3
+IPV6_DEFAULTGW=FE80::1
+```
+
+edit /etc/sysconfig/network-scripts/ifcfg-ens3
+```
+BOOTPROTO=static
+DEVICE=ens3
+ONBOOT=yes
+PREFIX=27
+IPADDR=193.5.82.130
+IPV6INIT=yes
+IPV6_AUTOCONF=no
+IPV6ADDR=2001:620:500:FF0D::20/64
+NM_CONTROLLED=no
+```
+
+```
+hostnamectl set-hostname ns.n113.nslab.ch
+rpm -qa | grep dhcp
+```
+edit /etc/dhcp/dhcpd.conf
+```
+option domain-name "ns113.nslab.ch";
+option domain-name-servers 193.5.82.130, 193.5.80.80;
+
+default-lease-time 300;
+max-lease-time 7200;
+
+log-facility local7;
+
+subnet 193.5.82.128 netmask 255.255.255.224 {
+  range 193.5.82.144 193.5.82.158;
+  option routers 193.5.80.113;
+}
+```
+```
+systemctl start dhcpd
+systemctl enable dhcpd
+```
+Change Client 1 from fix IP address to DHCP
+Client 1 got the first IP address in the range 193.5.82.144
+
+edit /etc/dhcp/dhcpd.conf
+```
+host client1 {
+  hardware ethernet 52:54:00:35:84:52;
+  fixed-address 193.5.82.150
+}
+```
+Client 1 got the new IP address 193.5.82.150
+
+## Exercise 13
+edit /etc/dhcp/dhcpd6.conf
+option dhcp6.name-servers 2001:620:500:ff0d::20;
+option dhcp6.domain-search "n113.nslab.ch";
+
+```
+subnet6 2001:620:500:ff0d::/64 {
+  range6 2001:620:500:ff0d::40 2001:620:500:ff0d::2000;
+}
+```
+
+```
+dhcp6 start
+```
+client1 got a ipv6 address
+
+```
+vtysh conf interface ens3
+ipv6 nd managed-config-flag
+```
+
+host client1 {
+  hardware ethernet 52:54:00:35:84:52;
+  fixed-address6 2001:620:500:ff0d::50;
+}
+```
+
+not got client 1 got the ipv6 address 2001:620:500:ff0d::50
