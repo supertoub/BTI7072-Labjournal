@@ -366,12 +366,30 @@ client1 got a ipv6 address
 ```
 vtysh conf interface ens3
 ipv6 nd managed-config-flag
-```
+ipv6 nd other-config-flag
+ipv6 nd ra-invervall 60
+no ipv6 nd suppress-ra
+write mem
 
+```
 host client1 {
   hardware ethernet 52:54:00:35:84:52;
   fixed-address6 2001:620:500:ff0d::50;
 }
 ```
 
-not got client 1 got the ipv6 address 2001:620:500:ff0d::50
+dhclient -6 -r
+dhclient -6
+
+![DHCP 6 Capture](./dhcpv6Release.png)
+
+## Exercise 14
+Add /etc/named.conf
+``` 
+zone "n113.nslab.ch" {
+  type master;
+  file "fwd-n113.nslab.ch";
+};
+```
+
+systemctl named start              
