@@ -385,14 +385,72 @@ dhclient -6
 ![DHCP 6 Capture](./dhcpv6Release.png)
 
 ## Exercise 14
-Add /etc/named.conf
-``` 
+Add /var/named/named.conf
+```
+zone "." IN{
+  type hint;
+  file "/var/named/named.cache";
+};
+
 zone "n113.nslab.ch" {
   type master;
-  file "fwd-n113.nslab.ch";
+  file "/var/named/fwd-n113.nslab.ch";
 };
 ```
+
+update fwd-n113.nslab.ch
 ```
-systemctl named start 
+;
+; BIND Zone File
+;
+$TTL    300
+@       IN      SOA     ns.n113.nslab.ch root.n113.nslab.ch (
+                        2018050301      ; Serial
+                        600             ; Refresh
+                        300             ; Retry
+                        7200            ; Expire
+                        1200 )          ; Negative Cache TTL
+
+@       IN      NS      ns
+ns      IN      A       193.5.82.130
+ns      IN      AAAA    2001:620:500:ff0D::20
 ```
 
+```
+systemctl named start
+```
+
+less var/log/messages > all zones loaded and running
+
+
+add to named.conf
+```
+listen-on port 53 {any}
+listen-on-v6 port 53 {any}
+```
+
+client01
+```
+dig any ns.n113.nslab.ch
+```
+
+## Exercise 15
+create file /var/named/rev-n113.nslab.ch
+create file /var/named/rev6-n113.nslab.ch
+
+```
+;
+; BIND Zone File
+;
+$TTL    300
+@       IN      SOA     ns.n113.nslab.ch root.n113.nslab.ch (
+                        2018050301      ; Serial
+                        600             ; Refresh
+                        300             ; Retry
+                        7200            ; Expire
+                        1200 )          ; Negative Cache TTL
+
+@       IN      NS      ns
+ns      IN      A       193.5.82.130
+ns      IN      AAAA    2001:620:500:ff0D::20
+```
