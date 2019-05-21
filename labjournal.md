@@ -436,7 +436,7 @@ dig any ns.n113.nslab.ch
 
 ## Exercise 15
 create file /var/named/rev-n113.nslab.ch
-create file /var/named/rev6-n113.nslab.ch
+
 
 ```
 ;
@@ -450,7 +450,39 @@ $TTL    300
                         7200            ; Expire
                         1200 )          ; Negative Cache TTL
 
-@       IN      NS      ns
-ns      IN      A       193.5.82.130
-ns      IN      AAAA    2001:620:500:ff0D::20
+          IN     NS     ns.113.nslab.ch.
+130       IN     PTR    ns.113.nslab.ch.
 ```
+
+create file /var/named/rev6-n113.nslab.ch
+```
+;
+; BIND Zone File
+;
+$TTL    300
+@       IN      SOA     ns.n113.nslab.ch root.n113.nslab.ch (
+                        2018050301      ; Serial
+                        600             ; Refresh
+                        300             ; Retry
+                        7200            ; Expire
+                        1200 )          ; Negative Cache TTL
+
+;D.0        IN     NS     ns.113.nslab.ch.
+;D.0        IN     PTR    ns.113.nslab.ch.
+@           IN     NS     ns.113.nslab.ch.
+0.2.0.0.0.0.0.0.0.0.0.0.0.0.0 IN   PTR   ns.n113.nslab.ch.
+```
+
+client01
+```
+dig any 193.5.82.130
+```
+## Exercise 16
+already done earlier
+
+## Exercise 17
+```
+nslookup sbb.ch
+```
+
+![nslookup for sbb.ch](./nslookup.png)
