@@ -486,3 +486,30 @@ nslookup sbb.ch
 ```
 
 ![nslookup for sbb.ch](./nslookup.png)
+
+named.conf
+```
+include "/etc/rndc.key";
+
+controls {
+        inet 127.0.0.1 allow { localhost; } keys { "rndc-key"; };
+};
+```
+
+```
+systemctl restart named
+rndc status
+rndc dumpdb -cache
+
+cat /var/named/data/cache_dump.db
+```
+
+## Exercise 18
+add to /etc/dhcpd.conf
+```
+update-optimization false;
+update-static-leases false;
+```
+
+add shared dhcp-updater key to rndc.key
+
