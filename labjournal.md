@@ -511,5 +511,50 @@ update-optimization false;
 update-static-leases false;
 ```
 
-add shared dhcp-updater key to rndc.key
 
+
+create rndc.conf
+```
+server localhost {
+  key  "rndc-key";
+};
+key "rndc-key" {
+  algorithm hmac-md5;
+  secret "<key>";
+};
+
+```
+
+rndc dumpdb -cache
+![DNS Zone Dump]("tcpdump_rndc.png")
+
+update dhcpd.conf
+```
+# update dns config each time
+update-optimization false;
+update-static-leases true;
+
+key DHCP_UPDATER {
+ algorithm hmac-md5;
+ secret Qq6gGm8yExOc7ltYRutSV47prHBMiG2Ty9okFt1zEvLmwfBGZ8UEO3VyG5uq;
+};
+
+zone n113.nslab.ch. {
+  primary 193.5.82.130;
+  key DHCP_UPDATER;
+}
+
+zone 128.82.5.193.in-addr.arpa. {
+  primary 193.5.82.130;
+  key DHCP_UPDATER;
+}
+```
+add ipv6
+```
+zone D.0.F.F.0.0.5.0.0.2.6.0.1.0.0.2.ip6.arpa. {
+  primary ns.113.nslab.ch;
+  key DHCP_UPDATER;
+}
+```
+
+# Exercise 4
