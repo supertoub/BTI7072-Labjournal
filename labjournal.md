@@ -558,3 +558,81 @@ zone D.0.F.F.0.0.5.0.0.2.6.0.1.0.0.2.ip6.arpa. {
 ```
 
 # Exercise 4
+Edit etc/sysconfig/network-scripts/ifcfg-ens
+```
+BOOTPROTO=static
+DEVICE=ens3
+ONBOOT=yes
+PREFIX=27
+IPADDR=193.5.82.131
+IPV6INIT=yes
+IPV6_AUTOCONF=no
+IPV6ADDR=2001:620:500:FF0D::25/64
+NM_CONTROLLED=no
+```
+
+Add DNS Server to Server2
+Add to sysconfig/resolf.conf
+```
+nameserver localhost
+```
+Check internet connection ✅
+
+Add DNS entry for Mail
+fwd-ns113.nslab.ch
+```
+n113.nslab.ch	IN SOA	ns.n113.nslab.ch. root.n113.nslab.ch. (
+				2019050221 ; serial
+				10800      ; refresh (3 hours)
+				15         ; retry (15 seconds)
+				604800     ; expire (1 week)
+				10800      ; minimum (3 hours)
+				)
+@			NS	ns
+ns          IN  A 193.5.82.130
+ns          IN  AAAA  2001:620:500:FF0D::20			
+			IN MX 10 mail.n113.nslab.ch.
+			
+server02    A   193.5.82.131
+
+mail        A   193.5.82.131
+```
+
+Edit main.cf
+```
+myhostname = mail.n113.nslab.ch
+mydomain = n113.nslab.ch
+inet_interfaces = $myhostname, localhost
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain, mail.n113.nslab.ch
+```
+
+```
+telnet localhost 25
+
+Trying 193.5.82.131...
+Connected to mail.
+Escape character is '^]'.
+220 mail.n113.nslab.ch ESMTP Postfix
+EHLO n113.nslab.ch
+250-mail.n113.nslab.ch
+250-PIPELINING
+250-SIZE 10240000
+250-VRFY
+250-ETRN
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250 DSN
+MAIL FROM: user@n113.nslab.ch
+250 2.1.0 Ok
+RCPT TO: user@n113.nslab.ch
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+Subject: test
+test test
+.
+250 2.0.0 Ok: queued as 6E4F723977E7
+QUIT
+221 2.0.0 Bye
+Connection closed by foreign host.
+```
