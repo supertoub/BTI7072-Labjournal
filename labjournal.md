@@ -602,7 +602,7 @@ Edit main.cf
 ```
 myhostname = mail.n113.nslab.ch
 mydomain = n113.nslab.ch
-inet_interfaces = $myhostname, localhost
+inet_interfaces = all
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain, mail.n113.nslab.ch
 ```
 
