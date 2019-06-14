@@ -692,4 +692,59 @@ systemctl enable saslauthd
 systemctl restart postfix
 
 swaks -s mail.n113.nslab.ch -tls -p 587 -a -t thomas.baumann.3@students.bfh.ch
+swaks -tlso -t user@n113.nslab.ch
+```
+[root@mail postfix]# swaks -tlso -t user@n113.nslab.ch
+=== Trying mail.n113.nslab.ch:25...
+=== Connected to mail.n113.nslab.ch.
+<-  220 mail.n113.nslab.ch ESMTP Postfix
+ -> EHLO mail.n113.nslab.ch
+<-  250-mail.n113.nslab.ch
+<-  250-PIPELINING
+<-  250-SIZE 10240000
+<-  250-VRFY
+<-  250-ETRN
+<-  250-STARTTLS
+<-  250-ENHANCEDSTATUSCODES
+<-  250-8BITMIME
+<-  250 DSN
+ -> STARTTLS
+<-  220 2.0.0 Ready to start TLS
+=== TLS started with cipher TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256
+=== TLS no local certificate set
+=== TLS peer DN="/CN=mail.n113.nslab.ch"
+ ~> EHLO mail.n113.nslab.ch
+<~  250-mail.n113.nslab.ch
+<~  250-PIPELINING
+<~  250-SIZE 10240000
+<~  250-VRFY
+<~  250-ETRN
+<~  250-ENHANCEDSTATUSCODES
+<~  250-8BITMIME
+<~  250 DSN
+ ~> MAIL FROM:<user@mail.n113.nslab.ch>
+<~  250 2.1.0 Ok
+ ~> RCPT TO:<user@n113.nslab.ch>
+<~  250 2.1.5 Ok
+ ~> DATA
+<~  354 End data with <CR><LF>.<CR><LF>
+ ~> Date: Fri, 14 Jun 2019 13:01:28 +0200
+ ~> To: user@n113.nslab.ch
+ ~> From: user@mail.n113.nslab.ch
+ ~> Subject: test Fri, 14 Jun 2019 13:01:28 +0200
+ ~> Message-Id: <20190614130128.005228@mail.n113.nslab.ch>
+ ~> X-Mailer: swaks v20170101.0 jetmore.org/john/code/swaks/
+ ~> 
+ ~> This is a test mailing
+ ~> 
+ ~> .
+<~  250 2.0.0 Ok: queued as 6F5DC32A9DE7
+ ~> QUIT
+<~  221 2.0.0 Bye
+=== Connection closed with remote host.
+```
+* Edit /etc/dovecot/local.conf
+* systemctl restart dovecot
+* Test TLS
+!['IMAP'](./TLS.png)
 
