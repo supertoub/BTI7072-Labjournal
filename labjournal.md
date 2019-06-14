@@ -691,8 +691,7 @@ edit /etc/postfix/master.cf and enable
 systemctl enable saslauthd
 systemctl restart postfix
 
-swaks -s mail.n113.nslab.ch -tls -p 587 -a -t thomas.baumann.3@students.bfh.ch
-swaks -tlso -t user@n113.nslab.ch
+* swaks -tlso -t user@n113.nslab.ch
 ```
 [root@mail postfix]# swaks -tlso -t user@n113.nslab.ch
 === Trying mail.n113.nslab.ch:25...
