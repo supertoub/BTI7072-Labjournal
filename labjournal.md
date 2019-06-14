@@ -647,13 +647,25 @@ Install satelite system with n113.nslab.ch as relay
 echo test | mail -s "das ist ein Test" thomas.baumann@students.bfh.ch
 ```
 
-!['Send and recieve Mail'](./sendandrecievemail.png)
+!['Send and recieve Mail'](./sendandreceivemail.png)
 
 dovecot already installed
 create file /etc/dovecot/local.conf
+```
 systemctl start dovecot
 telnet mail.n113.nslab.ch 110
+```
 
 !['dovecot'](./dovecot.png)
 
+```
 systemctl enable dovecot
+```
+
+edit /etc/dovecot/conf.d/10-ssl.conf
+```
+ssl = no
+disable_plaintext_auth = no
+```
+
+!['Thunderbird'](./thunderbird.png)
