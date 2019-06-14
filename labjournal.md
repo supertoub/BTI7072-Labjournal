@@ -580,23 +580,8 @@ Check internet connection ✅
 
 Add DNS entry for Mail
 fwd-ns113.nslab.ch
-```
-n113.nslab.ch	IN SOA	ns.n113.nslab.ch. root.n113.nslab.ch. (
-				2019050221 ; serial
-				10800      ; refresh (3 hours)
-				15         ; retry (15 seconds)
-				604800     ; expire (1 week)
-				10800      ; minimum (3 hours)
-				)
-@			NS	ns
-ns          IN  A 193.5.82.130
-ns          IN  AAAA  2001:620:500:FF0D::20			
-			IN MX 10 mail.n113.nslab.ch.
-			
-server02    A   193.5.82.131
 
-mail        A   193.5.82.131
-```
+!['DNS Configuration'](./DNSFix.png)
 
 Edit main.cf
 ```
@@ -636,3 +621,9 @@ QUIT
 221 2.0.0 Bye
 Connection closed by foreign host.
 ```
+
+!['Mail Configuration'](./mailConfig.png)
+
+!['Mail Log'](./mailLog.png)
+
+!['Mail Inbox'](./mailinbox.png)
