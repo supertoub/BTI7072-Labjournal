@@ -669,3 +669,27 @@ disable_plaintext_auth = no
 ```
 
 !['Thunderbird'](./thunderbird.png)
+
+!['IMAP'](./imap.png)
+
+install https, php mod_ssl
+
+create file mail.conf in /etc/https/conf.d
+systemctl start httpd
+http://mail.n113.nslab.ch works
+
+install certbot python2-certbot-apache
+
+get lets encrypte certificate
+
+https://mail.n113.nslab.ch works
+
+!['https'](./https.png)
+
+edit /etc/postfix/master.cf and enable
+
+systemctl enable saslauth
+systemctl restart postfix
+
+swaks -s mail.n113.nslab.ch -tls -p 587 -a -t thomas.baumann.3@students.bfh.ch
+
