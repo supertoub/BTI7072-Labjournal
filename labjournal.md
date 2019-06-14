@@ -746,5 +746,13 @@ swaks -tlso -t user@n113.nslab.ch
 * Edit /etc/dovecot/local.conf
 * systemctl restart dovecot
 * Test TLS
-!['IMAP'](./TLS.png)
+!['TLS Check'](./TLS.png)
+* To limit access to "dovecot" to POP3S/IMAP4
+!['TLS Check'](./dovecotlisten.png)
 
+* Edit /etc/dovecot/local.conf and check log
+```
+Jun 14 13:49:36 mail dovecot: master: Dovecot v2.2.36 (1f10bfa63) starting up for imap, pop3 (core dumps disabled)
+```
+* Wireshark TLS
+!['TLS Wireshark'](./TLSWireshark.png)
