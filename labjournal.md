@@ -11,6 +11,7 @@
 Router:
 Update /etc/resolve.conf
 search n113.nslab.ch nslab.ch
+search netlab.nslab.ch
 nameserver 193.5.80.80
 ```
 <br/>
@@ -563,12 +564,23 @@ Edit etc/sysconfig/network-scripts/ifcfg-ens
 BOOTPROTO=static
 DEVICE=ens3
 ONBOOT=yes
-PREFIX=27
-IPADDR=193.5.82.131
-IPV6INIT=yes
-IPV6_AUTOCONF=no
-IPV6ADDR=2001:620:500:FF0D::25/64
 NM_CONTROLLED=no
+IPADDR=193.5.82.131
+NETMASK=255.255.255.224
+GATEWAY=193.5.82.225
+IPV6_DEFAULTDEV=ens3
+IPV6_DEFAULTGW=FE80::1
+IPV6ADDR=2001:620:500:FF0D::25
+IPV6INIT=yes
+IPV6_AUTOCONFIG=no
+NETWORKING_IPV6=yes
+NOZEROCONF=yes
+```
+
+```
+hostnamectl set-hostname mail.n116.nslab.ch
+systemctl restart network
+
 ```
 
 Add DNS Server to Server2
@@ -627,3 +639,21 @@ Connection closed by foreign host.
 !['Mail Log'](./mailLog.png)
 
 !['Mail Inbox'](./mailinbox.png)
+
+sudo apt install mailutils
+Install satelite system with n113.nslab.ch as relay
+
+```
+echo test | mail -s "das ist ein Test" thomas.baumann@students.bfh.ch
+```
+
+!['Send and recieve Mail'](./sendandrecievemail.png)
+
+dovecot already installed
+create file /etc/dovecot/local.conf
+systemctl start dovecot
+telnet mail.n113.nslab.ch 110
+
+!['dovecot'](./dovecot.png)
+
+systemctl enable dovecot
