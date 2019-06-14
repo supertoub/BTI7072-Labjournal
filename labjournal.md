@@ -756,7 +756,7 @@ Jun 14 13:49:36 mail dovecot: master: Dovecot v2.2.36 (1f10bfa63) starting up fo
 * Wireshark TLS
 !['TLS Wireshark'](./TLSWireshark.png)
 * Receive Mail works
-!['Recive Mail from Gmail'](./TreceiveMail.png)
+!['Recive Mail from Gmail'](./receiveMail.png)
 * Config MUA
 !['Config MUA'](./configMUA.png)
 * Sending and receving Mails works!
