@@ -688,7 +688,7 @@ https://mail.n113.nslab.ch works
 
 edit /etc/postfix/master.cf and enable
 
-systemctl enable saslauth
+systemctl enable saslauthd
 systemctl restart postfix
 
 swaks -s mail.n113.nslab.ch -tls -p 587 -a -t thomas.baumann.3@students.bfh.ch
