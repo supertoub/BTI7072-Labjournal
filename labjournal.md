@@ -4,8 +4,8 @@
 - Set up LAB-Journal
 - Group assingment nr: n113
 - Familiarize with the virtual lab setup
-- Search RHEL 7 Networking guide (TODO)
-- Router VM edit config of ENS4 (TODO)
+- Search RHEL 7 Networking guide
+- Router VM edit config of ENS4
 
 ```
 Router:
@@ -527,7 +527,7 @@ key "rndc-key" {
 ```
 
 rndc dumpdb -cache
-![DNS Zone Dump]("tcpdump_rndc.png")
+![DNS Zone Dump](./tcpdump_rdnc.png)
 
 update dhcpd.conf
 ```
@@ -733,9 +733,9 @@ systemctl restart postfix
  ~> Subject: test Fri, 14 Jun 2019 13:01:28 +0200
  ~> Message-Id: <20190614130128.005228@mail.n113.nslab.ch>
  ~> X-Mailer: swaks v20170101.0 jetmore.org/john/code/swaks/
- ~> 
+ ~>
  ~> This is a test mailing
- ~> 
+ ~>
  ~> .
 <~  250 2.0.0 Ok: queued as 6F5DC32A9DE7
  ~> QUIT
@@ -762,7 +762,7 @@ Jun 14 13:49:36 mail dovecot: master: Dovecot v2.2.36 (1f10bfa63) starting up fo
 * Sending and receving Mails works!
 # 25
 ```
-yum install --enablerepo=epel roundcubemail 
+yum install --enablerepo=epel roundcubemail
 ```
 * Edit /etc/httpd/conf.d/roundcubemail.conf and verify if it works
 !['RoundcubeMail'](./roundcube.png)
