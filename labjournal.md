@@ -1,5 +1,7 @@
 # LAB Journal Serie 1
-## Exercise 1
+Thomas Baumann & Tobias Weissert
+
+## Exercise 1 Static Routing
 - Set up Git repo
 - Set up LAB-Journal
 - Group assingment nr: n113
@@ -14,7 +16,6 @@ search n113.nslab.ch nslab.ch
 search netlab.nslab.ch
 nameserver 193.5.80.80
 ```
-<br/>
 
 Router:
 ```
@@ -36,7 +37,6 @@ GATEWAY=193.5.80.1
 IPV4_FAILURE_FATAL=yes
 Name="System eth0"
 ```
-<br/>
 
 Router:
 ```
@@ -52,7 +52,7 @@ GATEWAY=193.5.82.1
 IPV4_FAILURE_FATAL=yes
 Name="System eth0"
 ```
-<br/>
+
 
 Router:
 ```
@@ -62,7 +62,6 @@ Net.ipv4.ip_forward = 1
 sysctl -p /etc/sysctl.conf
 systemctl restart network
 ```
-<br/>
 
 Router:
 ```
@@ -70,21 +69,18 @@ ping 8.8.8.8 ✓
 traceroute 8.8.8.8 ✓
 ping google.com ✓
 ```
-<br/>
 
 Client:
 - Set IP to manual: 193.5.82.128/27 Gateway: 193.5.82.129
 - Set DNS Server to 193.5.80.80
 
-### 5. März 2019
-Tobias Weissert & Thomas Baumann
 Network capture
 ![Capture networkmonitor](./NetworkMonitorScreenshot.png)
 
 ARP capture
 ![ARP Capture](./arpScreenshot.png)
 
-## Exercise 2
+## Exercise 2 Static routing – routing tables
 Router:
 ```ping 193.5.82.100 [Redirect host, nexthop: 193.5.80.112]```
 ![Ping another group](./ICMPRedirect.png)
@@ -95,7 +91,7 @@ Router:
 Make route persistent create file /etc/sysconfig/network-scripts/route-ens4
 ```193.5.82.96/27 via 193.5.80.112 dev ens4```
 
-## Exercise 3
+## Exercise 3 Dynamic routing – zebra service
 Router: change /etc/sysconfig/network-scripts/ifcfg-ens3 and ifcfg-ens4
 ```
 ONBOOT=no
@@ -122,8 +118,6 @@ ip route 0.0.0.0/0 193.5.80.1
 write mem
 ```
 
-### 12. März 2019
-Tobias Weissert & Thomas Baumann
 ```
 vtysh:
 conf t
@@ -136,7 +130,7 @@ ip address 193.5.82.129/24
 ping 8.8.8.8 ✓
 ```
 
-## Exercise 4
+## Exercise 4 Dynamic routing – RIPv2
 Router: add to /etc/quagga/ripd.conf
 ```
 log file /etc/quagga/ripd.conf
@@ -166,7 +160,7 @@ ping 8.8.8.8 ✓
 ![RIP Configuration](./RIPConf.png)
 ![RIP Announcment](./RIPAnnouncement.png)
 
-## Exercise 5
+## Exercise 5 Dynamic routing – OSPFv2
 Router: add to /etc/quagga/ospfd.conf
 ```
 log file /var/log/quagga/ospfd.conf
@@ -191,9 +185,7 @@ systemctl enable ospfd
 ```
 ![OSPF Capture](./ospfCapture.png)
 
-## Exercise 6
-### 19. März 2019
-Tobias Weissert & Thomas Baumann
+## Exercise 6 Dynamic routing – RIPv2 and OSPFv2
 
 ![Route priority](./ospfVSrip.png)
 RIP has a higher priority
@@ -206,11 +198,8 @@ ip route 192.5.80.1 0.0.0.0/0 130
 
 ![Static route](./staticRouteBackup.png)
 
-### 26. März 2019 IETF 104
 # LAB Journal Serie 2
-### 2. April 2019
-Tobias Weissert & Thomas Baumann
-
+## Exercise 7 IPv6 Connectivity
 ```
 ip -6 addr
 ```
@@ -222,6 +211,7 @@ ping6 www.switch.ch ✓
 
 Source address in the router advertisment is the virtual network adapter of the VM host.
 
+## Exercise 8 IPv6 Static Routing – routing tables
 ```
 vtysh conf t interface ens4
 ipv6 address 2001:620:500:FF00::FF0D/64
@@ -243,9 +233,7 @@ ping6 switch.ch ✓
 ping6 -i ens4 fe80::1 ✓
 ```
 
-### 09. April 2019
-Tobias Weissert & Thomas Baumann
-## Exercise 9
+## Exercise 9 IPv6 Router Advertisement
 we prefer quagga
 ```
 vtysh conf t interface ens3
@@ -272,7 +260,7 @@ vtysh interface ens3
 ipv6 address fdf8:f06a:90f5::/48
 ipv6 nd prefix fdf8:f06a:90f5::/48
 ```
-## Exercise 10
+## Exercise 10 IPv6 dynamic routing - RIPng
 edit /etc/quagga/ripngd.conf
 ```
 log file /var/log/quagga/ospf6.conf
@@ -285,11 +273,8 @@ router ripng
 redistribute connected
 ```
 
-### 23. April 2019
-Tobias Weissert & Thomas Baumann
-
 # Serie 3 DHCP and DNS
-## Exercise 12
+## Exercise 12 DHCP server
 edit /etc/sysconfig/network
 ```
 NETWORKING=yes
@@ -348,7 +333,7 @@ host client1 {
 ```
 Client 1 got the new IP address 193.5.82.150
 
-## Exercise 13
+## Exercise 13 DHCPv6 server
 edit /etc/dhcp/dhcpd6.conf
 option dhcp6.name-servers 2001:620:500:ff0d::20;
 option dhcp6.domain-search "n113.nslab.ch";
@@ -385,7 +370,7 @@ dhclient -6
 ```
 ![DHCP 6 Capture](./dhcpv6Release.png)
 
-## Exercise 14
+## Exercise 14 DNS Server - Basic Configuration
 Add /var/named/named.conf
 ```
 zone "." IN{
@@ -435,7 +420,7 @@ client01
 dig any ns.n113.nslab.ch
 ```
 
-## Exercise 15
+## Exercise 15 DNS Server - Zones
 create file /var/named/rev-n113.nslab.ch
 
 
@@ -478,10 +463,10 @@ client01
 ```
 dig any 193.5.82.130
 ```
-## Exercise 16
+## Exercise 16 DNS Server – adjust the resolver
 already done earlier
 
-## Exercise 17
+## Exercise 17 DNS Queries – Recordings
 ```
 nslookup sbb.ch
 ```
@@ -505,7 +490,7 @@ rndc dumpdb -cache
 cat /var/named/data/cache_dump.db
 ```
 
-## Exercise 18
+## Exercise 18 DNS/DHCP – Dynamic Updates
 add to /etc/dhcpd.conf
 ```
 update-optimization false;
@@ -559,6 +544,7 @@ zone D.0.F.F.0.0.5.0.0.2.6.0.1.0.0.2.ip6.arpa. {
 ```
 
 # Exercise 4
+## Exercise 19 MTA – Receiving mails
 Edit etc/sysconfig/network-scripts/ifcfg-ens
 ```
 BOOTPROTO=static
@@ -633,6 +619,7 @@ QUIT
 221 2.0.0 Bye
 Connection closed by foreign host.
 ```
+## Exercise 20 MTA – Sending mails
 
 !['Mail Configuration'](./mailConfig.png)
 
@@ -648,6 +635,8 @@ echo test | mail -s "das ist ein Test" thomas.baumann@students.bfh.ch
 ```
 
 !['Send and recieve Mail'](./sendandreceivemail.png)
+
+## Exercise 21 MTA – Access to mailboxes via IMAP3 (and POP3)
 
 dovecot already installed
 create file /etc/dovecot/local.conf
@@ -667,10 +656,13 @@ edit /etc/dovecot/conf.d/10-ssl.conf
 ssl = no
 disable_plaintext_auth = no
 ```
+## Exercise 22 MTA – Configuration of a MUA
 
 !['Thunderbird'](./thunderbird.png)
 
 !['IMAP'](./imap.png)
+
+## Exercise 23 Install and configure a web server with LE certificates
 
 install https, php mod_ssl
 
@@ -687,6 +679,8 @@ https://mail.n113.nslab.ch works
 !['https'](./https.png)
 
 edit /etc/postfix/master.cf and enable
+
+## Exercise 24 Securing the communication
 
 systemctl enable saslauthd
 systemctl restart postfix
